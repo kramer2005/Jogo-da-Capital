@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Jogo da Capital</string>
+    <string name="greet_text">Qual a capital?</string>
+    <string name="confirm">Confirmar</string>
+    <string name="next_question">Próximo estado</string>
+    <string name="result">Resultado</string>
+    <string name="capital">Capital</string>
+    <string name="answer_is">Sua resposta está</string>
+    <string name="correct">CORRETA</string>
+    <string name="wrong">ERRADA</string>
+    <string name="correct_answer">A resposta correta é %1$s</string>
+    <string name="end_game_label">Fim de jogo! Você marcou</string>
+    <string name="end_game">Encerrar jogo</string>
+    <string name="new_game">Jogar novamente</string>
+    <string name="points">%1$d pontos</string>
+</resources>
