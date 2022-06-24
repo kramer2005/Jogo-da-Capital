@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -141,6 +142,12 @@ public class MainActivity extends AppCompatActivity {
 
         String userText = capitalTextInput.getText().toString();
         userText = normalize(userText);
+
+        if (userText.length() <= 0) {
+            Toast.makeText(this, "Digite algo!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String matchText = normalize(this.stateMapEntry.getValue());
 
         boolean isCorrect = userText.equals(matchText);
