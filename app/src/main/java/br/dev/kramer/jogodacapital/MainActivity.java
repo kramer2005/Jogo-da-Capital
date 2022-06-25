@@ -8,9 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.Normalizer;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +29,40 @@ public class MainActivity extends AppCompatActivity {
     int defaultColor, wrongColor, correctColor;
     Button confirmButton, nextQuestionButton;
     EditText capitalTextInput;
+
+    static private HashMap<String, String> stateMap = new HashMap<String, String>();
+    private int stateMapIndex;
+    private Map.Entry<String, String> stateMapEntry;
+
+    {
+        stateMap.put("Acre","Rio Branco");
+        stateMap.put("Alagoas","Maceió");
+        stateMap.put("Amapá","Macapá");
+        stateMap.put("Amazonas","Manaus");
+        stateMap.put("Bahia","Salvador");
+        stateMap.put("Ceará","Fortaleza");
+        stateMap.put("Distrito Federal","Brasília");
+        stateMap.put("Espírito Santo","Vitória");
+        stateMap.put("Goiás","Goiânia");
+        stateMap.put("Maranhão","São Luís");
+        stateMap.put("Mato Grosso","Cuiabá");
+        stateMap.put("Mato Grosso do Sul","Campo Grande");
+        stateMap.put("Minas Gerais","Belo Horizonte");
+        stateMap.put("Pará","Belém");
+        stateMap.put("Paraíba","João Pessoa");
+        stateMap.put("Paraná","Curitiba");
+        stateMap.put("Pernambuco","Recife");
+        stateMap.put("Piauí","Teresina");
+        stateMap.put("Rio de Janeiro","Rio de Janeiro");
+        stateMap.put("Rio Grande do Norte","Natal");
+        stateMap.put("Rio Grande do Sul","Porto Alegre");
+        stateMap.put("Rondônia","Porto Velho");
+        stateMap.put("Roraima","Boa Vista");
+        stateMap.put("Santa Catarina","Florianópolis");
+        stateMap.put("São Paulo","São Paulo");
+        stateMap.put("Sergipe","Aracaju");
+        stateMap.put("Tocantins","Palmas");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,32 +123,44 @@ public class MainActivity extends AppCompatActivity {
         resultLayout.setVisibility(View.INVISIBLE);
         correctAnswerTextView.setVisibility(View.VISIBLE);
 
-        // @todo - Setar o estado que o usuário deve dizer a capital
-        stateTextView.setText("Bahia");
+        Random r = new Random();
+        int index =  r.nextInt((stateMap.size() - 1));
+        this.stateMapIndex = index;
+        this.stateMapEntry = (Map.Entry<String, String>) stateMap.entrySet().toArray()[index];
+
+        stateTextView.setText(this.stateMapEntry.getKey());
 
         setQuestionVisible();
     }
 
+    public String normalize(String text) {
+        return Normalizer.normalize(text.trim().toLowerCase(Locale.ROOT), Normalizer.Form.NFKD).replaceAll("\\p{M}", "");
+    }
+
     public void confirmHandler(View view) {
         answeredQuestions++;
-        Random r = new Random();
-        boolean isCorrect = r.nextBoolean();
 
-        // @todo - Validar se a resposta está correta e remover o random usado para teste
-        // Lembrar de validar removendo acentos e com todas as letras minusculas
-        // tanto no correto quanto na resposta do usuário
+        String userText = capitalTextInput.getText().toString();
+        userText = normalize(userText);
+
+        if (userText.length() <= 0) {
+            Toast.makeText(this, "Digite algo!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String matchText = normalize(this.stateMapEntry.getValue());
+
+        boolean isCorrect = userText.equals(matchText);
 
         greetTextView.setVisibility(View.INVISIBLE);
         stateTextView.setVisibility(View.INVISIBLE);
         capitalInputLayout.setVisibility(View.INVISIBLE);
         confirmButton.setVisibility(View.INVISIBLE);
 
-
         if (isCorrect) {
             this.setCorrectAnswer();
         } else {
-            // @todo - Passar a resposta correta como parâmetro
-            this.setWrongAnswer("Lorem Ipsum");
+            this.setWrongAnswer(this.stateMapEntry.getValue());
         }
 
         if (answeredQuestions >= MAX_QUESTIONS) {
