@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
         stateMap.put("Amazonas","Manaus");
         stateMap.put("Bahia","Salvador");
         stateMap.put("Ceará","Fortaleza");
-        stateMap.put("Distrito Federal","Brasília");
+        //Retirado o DF da lista
+        //stateMap.put("Distrito Federal","Brasília");
         stateMap.put("Espírito Santo","Vitória");
         stateMap.put("Goiás","Goiânia");
         stateMap.put("Maranhão","São Luís");
@@ -142,6 +143,8 @@ public class MainActivity extends AppCompatActivity {
 
         String userText = capitalTextInput.getText().toString();
         userText = normalize(userText);
+        //Retirando a pontuação
+        userText = userText.replaceAll("\\p{Punct}", "");
 
         if (userText.length() <= 0) {
             Toast.makeText(this, "Digite algo!", Toast.LENGTH_SHORT).show();
@@ -175,6 +178,8 @@ public class MainActivity extends AppCompatActivity {
 
         resultTextView.setTextColor(correctColor);
         resultTextView.setText(R.string.correct);
+        //Limpando o campo onde o usuário digita a capital
+        capitalTextInput.setText("");
 
         correctAnswerTextView.setVisibility(View.INVISIBLE);
     }
@@ -182,6 +187,8 @@ public class MainActivity extends AppCompatActivity {
     private void setWrongAnswer(String correctAnswer) {
         resultTextView.setTextColor(wrongColor);
         resultTextView.setText(R.string.wrong);
+        //Limpando o campo onde o usuário digita a capital
+        capitalTextInput.setText("");
 
         String correctAnswerText = String.format(getResources().getString(R.string.correct_answer), correctAnswer);
 
