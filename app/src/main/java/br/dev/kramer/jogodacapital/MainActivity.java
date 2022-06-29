@@ -30,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
     Button confirmButton, nextQuestionButton;
     EditText capitalTextInput;
 
-    static private HashMap<String, String> stateMap = new HashMap<String, String>();
-    private int stateMapIndex;
+    static private final HashMap<String, String> stateMap = new HashMap<String, String>();
     private Map.Entry<String, String> stateMapEntry;
 
     {
@@ -41,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
         stateMap.put("Amazonas","Manaus");
         stateMap.put("Bahia","Salvador");
         stateMap.put("Ceará","Fortaleza");
-        //Retirado o DF da lista
-        //stateMap.put("Distrito Federal","Brasília");
         stateMap.put("Espírito Santo","Vitória");
         stateMap.put("Goiás","Goiânia");
         stateMap.put("Maranhão","São Luís");
@@ -126,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
 
         Random r = new Random();
         int index =  r.nextInt((stateMap.size() - 1));
-        this.stateMapIndex = index;
         this.stateMapEntry = (Map.Entry<String, String>) stateMap.entrySet().toArray()[index];
 
         stateTextView.setText(this.stateMapEntry.getKey());
@@ -143,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
 
         String userText = capitalTextInput.getText().toString();
         userText = normalize(userText);
-        //Retirando a pontuação
         userText = userText.replaceAll("\\p{Punct}", "");
 
         if (userText.length() <= 0) {
@@ -159,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
         stateTextView.setVisibility(View.INVISIBLE);
         capitalInputLayout.setVisibility(View.INVISIBLE);
         confirmButton.setVisibility(View.INVISIBLE);
+        capitalTextInput.setText("");
 
         if (isCorrect) {
             this.setCorrectAnswer();
@@ -178,8 +174,6 @@ public class MainActivity extends AppCompatActivity {
 
         resultTextView.setTextColor(correctColor);
         resultTextView.setText(R.string.correct);
-        //Limpando o campo onde o usuário digita a capital
-        capitalTextInput.setText("");
 
         correctAnswerTextView.setVisibility(View.INVISIBLE);
     }
@@ -187,8 +181,6 @@ public class MainActivity extends AppCompatActivity {
     private void setWrongAnswer(String correctAnswer) {
         resultTextView.setTextColor(wrongColor);
         resultTextView.setText(R.string.wrong);
-        //Limpando o campo onde o usuário digita a capital
-        capitalTextInput.setText("");
 
         String correctAnswerText = String.format(getResources().getString(R.string.correct_answer), correctAnswer);
 
